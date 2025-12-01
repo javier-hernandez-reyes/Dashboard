@@ -21,6 +21,7 @@ import Home from "./pages/Dashboard/Home";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { PublicRoute } from "./components/auth/PublicRoute";
 
+
 // UTTECAM Pages
 import { 
   Organigrama, 
@@ -51,8 +52,7 @@ import {
 } from "./pages/ServiciosGestion";
 
 
-
-// Vinculación pages
+// VINCULACION
 import VinculacionBanner from "./pages/Vinculacion/VinculacionBanner";
 import PracticasEstadiaBanner from "./pages/Vinculacion/PracticasEstadiaBanner";
 import CatalogoServicios from "./pages/Vinculacion/CatalogoServicios";
@@ -60,6 +60,12 @@ import CatalogoTalleres from "./pages/Vinculacion/CatalogoTalleres";
 import DocenteSNII from "./pages/Vinculacion/DocenteSNII";
 import RepositorioInvestigacion from "./pages/Vinculacion/RepositorioInvestigacion";
 import SeminarioCafe from "./pages/Vinculacion/SeminarioCafe";
+import ServicioSocial from "./pages/Vinculacion/ServicioSocial";
+import BolsaTrabajo from "./pages/Vinculacion/BolsaTrabajo";
+import ServiciosTecnologicosRealizados from "./pages/Vinculacion/ServiciosTecnologicosRealizados";
+import MovilidadInternacional from "./pages/Vinculacion/ModalidadInternacional"
+import EntidadCertificacionEvaluacion from "./pages/Vinculacion/EntidadCertificacionEvaluacion";
+import EncuentrosEgresados from "./pages/Vinculacion/EncuentrosEgresados";
 
 export default function App() {
   return (
@@ -121,6 +127,15 @@ export default function App() {
             <Route path="/practicas-estadia-banner" element={<PracticasEstadiaBanner />} />
             <Route path="/catalodo-servicios" element={<CatalogoServicios />} />
             <Route path="/catalogo-talleres" element={<CatalogoTalleres />} />
+            <Route path="/servicio-social" element={<ServicioSocial />} />
+            <Route path="/encuentro-egresados" element={<EncuentrosEgresados />} />
+
+            <Route path="/bolsa-trabajo" element={<BolsaTrabajo />} />
+            <Route path="/servicios-realizados" element={<ServiciosTecnologicosRealizados />} />
+            <Route path="/entidad-certificacion-evaluacion" element={<EntidadCertificacionEvaluacion />} />
+              
+            
+            <Route path="/movilidad-internacional" element={<MovilidadInternacional />} />
 
             <Route path="/docente-snii" element={<DocenteSNII />} />
             <Route path="/repositorio-investigacion" element={<RepositorioInvestigacion />} />
