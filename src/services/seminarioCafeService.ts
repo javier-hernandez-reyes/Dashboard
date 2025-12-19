@@ -11,18 +11,18 @@ export interface SeminarioResource {
 }
 
 export const getSeminarioResources = async (): Promise<SeminarioResource[]> => {
-  return await fetchWithAuth<SeminarioResource[]>('/api/seminario-cafe');
+  return await fetchWithAuth<SeminarioResource[]>('/api/seminarios-cafe');
 };
 
 export const uploadSeminarioResource = async (formData: FormData): Promise<SeminarioResource> => {
-  return await fetchWithAuth<SeminarioResource>('/api/seminario-cafe', {
+  return await fetchWithAuth<SeminarioResource>('/api/seminarios-cafe', {
     method: 'POST',
     body: formData,
   });
 };
 
 export const deleteSeminarioResource = async (id: number): Promise<{ message: string }> => {
-  return await fetchWithAuth<{ message: string }>(`/api/seminario-cafe/${id}`, {
+  return await fetchWithAuth<{ message: string }>(`/api/seminarios-cafe/${id}`, {
     method: 'DELETE',
   });
 };

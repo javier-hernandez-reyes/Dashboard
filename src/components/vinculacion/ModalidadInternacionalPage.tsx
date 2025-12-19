@@ -14,9 +14,9 @@ import {
   Save 
 } from "lucide-react";
 import { 
-  getMovilidadResources, 
-  uploadMovilidadResource, 
-  deleteMovilidadResource 
+  getMovilidadItems, 
+  createMovilidadItem, 
+  deleteMovilidadItem 
 } from "../../services/movilidadService";
 
 type GalleryImage = {
@@ -25,7 +25,7 @@ type GalleryImage = {
   url: string; // dataURL or remote URL
 };
 
-const BACKEND_URL = import.meta.env.VITE_BACKENDURL || 'http://localhost:3002';
+const BACKEND_URL = import.meta.env.VITE_BACKENDURL || 'http://localhost:3004';
 
 const MovilidadInternacionalPage: React.FC = () => {
   // --- PDF State ---
@@ -53,15 +53,15 @@ const MovilidadInternacionalPage: React.FC = () => {
   // --- Load Data ---
   const loadResources = async () => {
     try {
-      const resources = await getMovilidadResources();
+      const resources = await getMovilidadItems();
       
       // Process PDF (take the latest one)
       const pdfs = resources.filter((r: any) => r.tipo === 'pdf');
       if (pdfs.length > 0) {
-        const latestPdf = pdfs[0]; // Sorted by date DESC in backend
-        setPdfUrl(`${BACKEND_URL}${latestPdf.url}`);
+        const latestPdf = pdfs[pdfs.length - 1]; 
+        setPdfUrl(`${BACKEND_URL}/uploads/${latestPdf.archivo}`);
         setPdfFileName(latestPdf.titulo);
-        setPdfId(latestPdf.id);
+        setPdfId(latestPdf.id ?? null);
       } else {
         setPdfUrl(null);
         setPdfFileName(null);
@@ -70,9 +70,9 @@ const MovilidadInternacionalPage: React.FC = () => {
 
       // Process Images
       const imgs = resources.filter((r: any) => r.tipo === 'image').map((r: any) => ({
-        id: r.id.toString(),
+        id: r.id?.toString() || '0',
         title: r.titulo,
-        url: `${BACKEND_URL}${r.url}`
+        url: `${BACKEND_URL}/uploads/${r.archivo}`
       }));
       setImages(imgs);
 
@@ -99,12 +99,13 @@ const MovilidadInternacionalPage: React.FC = () => {
 
     setIsSaving(true);
     try {
-      const formData = new FormData();
-      formData.append('archivo', f);
-      formData.append('titulo', f.name);
-      formData.append('tipo', 'pdf');
-
-      await uploadMovilidadResource(formData);
+      await createMovilidadItem({
+          titulo: f.name,
+          archivo: f,
+          tipo: 'pdf',
+          orden: 0,
+          activo: true
+      });
       
       setToast({ type: "success", message: "PDF cargado correctamente." });
       await loadResources(); // Reload to get the new PDF
@@ -135,7 +136,7 @@ const MovilidadInternacionalPage: React.FC = () => {
     setPdfConfirmDeleteOpen(false);
     setIsSaving(true);
     try {
-      await deleteMovilidadResource(pdfId);
+      await deleteMovilidadItem(pdfId);
       setToast({ type: "success", message: "PDF eliminado." });
       await loadResources();
     } catch (error) {
@@ -174,12 +175,13 @@ const MovilidadInternacionalPage: React.FC = () => {
 
     setIsSaving(true);
     try {
-      const formData = new FormData();
-      formData.append('archivo', pendingImageForTitle.file);
-      formData.append('titulo', title || "Sin título");
-      formData.append('tipo', 'image');
-
-      await uploadMovilidadResource(formData);
+      await createMovilidadItem({
+          titulo: title || "Sin título",
+          archivo: pendingImageForTitle.file,
+          tipo: 'image',
+          orden: 0,
+          activo: true
+      });
       
       setToast({ type: "success", message: "Imagen añadida a la galería." });
       await loadResources();
@@ -203,7 +205,7 @@ const MovilidadInternacionalPage: React.FC = () => {
     setConfirmDeleteImageId(null);
     setIsSaving(true);
     try {
-      await deleteMovilidadResource(parseInt(id));
+      await deleteMovilidadItem(parseInt(id));
       setToast({ type: "success", message: "Imagen eliminada." });
       await loadResources();
     } catch (error) {

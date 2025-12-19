@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from './authService';
 
-const API_URL = import.meta.env.VITE_BACKENDURL || 'http://localhost:3002';
+const API_URL = import.meta.env.VITE_BACKENDURL || 'http://localhost:3004';
 
 export interface TipoEstadia {
   ID: number;
